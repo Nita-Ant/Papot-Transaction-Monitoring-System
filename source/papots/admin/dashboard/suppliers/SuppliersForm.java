@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import papots.admin.main.dashboard.MainFrame;
+
 public class SuppliersForm extends JPanel {
 	/**
 	 * 
@@ -24,16 +26,22 @@ public class SuppliersForm extends JPanel {
 	private JTextField jtxtfldSupplierID;
 	private JTextField jtxtfldSupplierName;
 	private JTextField jtxtfldSupplierAddress;
+	
+	/**
+	 * Dashboard that owns the panel
+	 */
+	protected MainFrame mainFrame;
 
 	/**
 	 * Create the panel.
 	 */
 	public SuppliersForm() {
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel jpnlSuppilersHeader = new JPanel();
 		jpnlSuppilersHeader.setMaximumSize(new Dimension(32767, 3000));
-		jpnlSuppilersHeader.setBackground(new Color(255, 204, 255));
+		jpnlSuppilersHeader.setBackground(new Color(255, 204, 204));
 		add(jpnlSuppilersHeader);
 		GridBagLayout gbl_jpnlSuppilersHeader = new GridBagLayout();
 		gbl_jpnlSuppilersHeader.columnWidths = new int[]{0, 0, 0};
@@ -42,8 +50,18 @@ public class SuppliersForm extends JPanel {
 		gbl_jpnlSuppilersHeader.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		jpnlSuppilersHeader.setLayout(gbl_jpnlSuppilersHeader);
 		
+		Component verticalStrut_1 = Box.createVerticalStrut(20);
+		verticalStrut_1.setMinimumSize(new Dimension(0, 50));
+		verticalStrut_1.setPreferredSize(new Dimension(0, 50));
+		verticalStrut_1.setSize(new Dimension(0, 50));
+		GridBagConstraints gbc_verticalStrut_1 = new GridBagConstraints();
+		gbc_verticalStrut_1.insets = new Insets(0, 0, 5, 0);
+		gbc_verticalStrut_1.gridx = 1;
+		gbc_verticalStrut_1.gridy = 0;
+		jpnlSuppilersHeader.add(verticalStrut_1, gbc_verticalStrut_1);
+		
 		JLabel jlblHeaderTitle = new JLabel("Suppliers Form");
-		jlblHeaderTitle.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		jlblHeaderTitle.setFont(new Font("Segoe UI Black", Font.BOLD, 24));
 		GridBagConstraints gbc_jlblHeaderTitle = new GridBagConstraints();
 		gbc_jlblHeaderTitle.anchor = GridBagConstraints.WEST;
 		gbc_jlblHeaderTitle.insets = new Insets(0, 0, 5, 0);

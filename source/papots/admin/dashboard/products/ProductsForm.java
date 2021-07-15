@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import papots.admin.main.dashboard.MainFrame;
+
 public class ProductsForm extends JPanel {
 	/**
 	 * 
@@ -27,6 +29,13 @@ public class ProductsForm extends JPanel {
 	
 	private JTextField jtxtfldProductID;
 	private JTextField jtxtfldProductName;
+	
+	/**
+	 * Dashboard that owns the panel
+	 */
+	protected MainFrame mainFrame;
+	
+	
 
 	/**
 	 * Create the panel.
@@ -37,7 +46,7 @@ public class ProductsForm extends JPanel {
 		JPanel jpnlProductsHeader = new JPanel();
 		jpnlProductsHeader.setMinimumSize(new Dimension(10, 1000));
 		jpnlProductsHeader.setMaximumSize(new Dimension(32767, 1800));
-		jpnlProductsHeader.setBackground(new Color(255, 204, 255));
+		jpnlProductsHeader.setBackground(new Color(255, 204, 204));
 		add(jpnlProductsHeader);
 		GridBagLayout gbl_jpnlProductsHeader = new GridBagLayout();
 		gbl_jpnlProductsHeader.columnWidths = new int[]{18, 0, 0};
