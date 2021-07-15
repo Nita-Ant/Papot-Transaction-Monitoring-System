@@ -65,21 +65,21 @@ public class PapotsDashboard extends JFrame {
 		jpnlSideBar.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Papot's Toy Club");
-		lblNewLabel.setBounds(10, 21, 113, 20);
+		lblNewLabel.setBounds(10, 23, 113, 20);
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		jpnlSideBar.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Dashboard");
+		JLabel lblNewLabel_1 = new JLabel("System");
 		lblNewLabel_1.setFont(new Font("Segoe UI Black", Font.BOLD, 24));
 		lblNewLabel_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_1.setBounds(10, 78, 141, 26);
+		lblNewLabel_1.setBounds(10, 69, 141, 26);
 		jpnlSideBar.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("The");
+		JLabel lblNewLabel_2 = new JLabel("Monitoring");
 		lblNewLabel_2.setFont(new Font("Segoe UI Black", Font.PLAIN, 24));
 		lblNewLabel_2.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2.setBounds(10, 52, 89, 26);
+		lblNewLabel_2.setBounds(10, 43, 141, 26);
 		jpnlSideBar.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Main Menu");
