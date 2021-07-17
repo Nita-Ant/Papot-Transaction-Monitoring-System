@@ -30,7 +30,7 @@ public class Sidebar extends JPanel {
 	 * Create the panel.
 	 */
 	public Sidebar() {
-		setPreferredSize(new Dimension(250, 455));
+		setPreferredSize(new Dimension(250, 480));
 		
 		setMinimumSize(new Dimension(250, 10));
 		setMaximumSize(new Dimension(250, 32767));
@@ -89,7 +89,9 @@ public class Sidebar extends JPanel {
 		jbtnTransactionInput.setBounds(10, 222, 230, 23);
 		
 		//Action Listener Code for Transaction Input 
-		
+		jbtnTransactionInput.addActionListener(event -> {
+			mainFrame.showTransactionsForm();
+		});
 		add(jbtnTransactionInput);
 		/* END OF jbtnTransactionInput */
 		
@@ -129,7 +131,7 @@ public class Sidebar extends JPanel {
 		jbtnExit.setBackground(Color.PINK);
 		jbtnExit.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		jbtnExit.setForeground(new Color(255, 255, 255));
-		jbtnExit.setBounds(151, 420, 89, 23);
+		jbtnExit.setBounds(151, 446, 89, 23);
 		add(jbtnExit);
 		
 		JLabel lblNewLabel_4 = new JLabel("Hello, admin!");

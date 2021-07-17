@@ -70,6 +70,7 @@ public class SuppliersForm extends JPanel {
 		jpnlSuppilersHeader.add(jlblHeaderTitle, gbc_jlblHeaderTitle);
 		
 		JLabel lblNewLabel = new JLabel("Please complete the form before submitting.");
+		lblNewLabel.setFont(new Font("Segoe UI", Font.ITALIC, 12));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;

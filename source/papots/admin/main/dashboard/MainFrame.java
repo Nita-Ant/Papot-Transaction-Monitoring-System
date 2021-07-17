@@ -42,6 +42,11 @@ public class MainFrame extends JFrame {
 	 */
 	protected papots.admin.dashboard.transaction.input.TransactionInput transactionInput; 
 	
+	/**
+	 * Transaction Dashboard Panel of the module
+	 */
+	protected papots.admin.dashboard.transaction.dashboard.TransactionDashboard  transactionDashboard; 
+	
 
 	/**
 	 * Launch the application.
@@ -63,10 +68,11 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setResizable(false);
 		setTitle("Papot's Dashboard");
-		setMinimumSize(new Dimension(800, 450));
+		setMinimumSize(new Dimension(800, 50));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 492);
+		setBounds(100, 100, 800, 532);
 		
 		//Main Content Pane Properties 
 		jpnlContentPane = new JPanel();
@@ -85,7 +91,7 @@ public class MainFrame extends JFrame {
 		
 		
 		// Create the DashBoard Panel
-		
+		transactionDashboard = new papots.admin.dashboard.transaction.dashboard.TransactionDashboard();
 		// Create the Transaction Form Panel
 		transactionInput = new papots.admin.dashboard.transaction.input.TransactionInput();
 		// Create the Products Form Panel
@@ -139,10 +145,11 @@ public class MainFrame extends JFrame {
 		repaint();
 	}
 	
+	
 	/**
-	 * Shows the Suppliers Form Panel
+	 * Shows the Transactions Form Panel
 	 */
-	public void showTransactionInput() {
+	public void showTransactionsForm() {
 		
 		if(jpnlCurrentShownPanel==transactionInput)
 			return;
@@ -154,6 +161,25 @@ public class MainFrame extends JFrame {
 		
 		jpnlCurrentShownPanel = transactionInput;
 		jpnlContentPane.add(transactionInput);
+		revalidate();
+		repaint();
+	}
+	
+	/**
+	 * Shows the Transactions Dashboard Panel
+	 */
+	public void showTransactionsDashboard() {
+		
+		if(jpnlCurrentShownPanel==transactionDashboard)
+			return;
+		else if (jpnlCurrentShownPanel != null) {
+			jpnlContentPane.remove(jpnlCurrentShownPanel);
+			revalidate();
+		}
+		
+		
+		jpnlCurrentShownPanel = transactionDashboard;
+		jpnlContentPane.add(transactionDashboard);
 		revalidate();
 		repaint();
 	}
