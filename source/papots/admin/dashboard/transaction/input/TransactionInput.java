@@ -25,12 +25,20 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+
 
 import net.proteanit.sql.DbUtils;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ListSelectionModel;
 
-import javax.swing.JButton;
 
-import javax.swing.JScrollPane;
 
 
 
@@ -46,7 +54,8 @@ public class TransactionInput extends JPanel {
 	 */
 	protected MainFrame mainFrame;
 	private JTable tblproducts;
-	private JTable table_1;
+	private JComboBox cmbSupplier; 
+	private static JTable order;
 	Connection objCon;
 	
 
@@ -55,6 +64,14 @@ public class TransactionInput extends JPanel {
 	 * @throws SQLException 
 	 */
 	public TransactionInput() throws SQLException {
+		
+		try {
+			createconn();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		setBackground(new Color(255, 204, 204));
 		setMinimumSize(new Dimension(750, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -125,11 +142,29 @@ public class TransactionInput extends JPanel {
 		
 		//add table 
 		tblproducts = new JTable();
+		tblproducts.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		
 		tblproducts.setFillsViewportHeight(true);
 		tblproducts.setFont(new Font("Times New Roman", Font.PLAIN, 12));
 		
+		//SHOW DIALOG FOR QUANTITY AND PRICE UPON SELECTING ROW
+    	
+    	tblproducts.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        
+			public void valueChanged(ListSelectionEvent event) {
+	            
+				DlgAsk objdlg = new DlgAsk();
+	            objdlg.setVisible(true);
+	            objdlg.setModal(true);
+	            
+	        	
+	        }
+	    });
 		
-		//add scrollpane
+		
+		
+    	//add scroll pane
 		JScrollPane scrollPane = new JScrollPane();
 		jpnlProductsTable.add(scrollPane, "name_351323148101700");
 		scrollPane.setViewportView(tblproducts);
@@ -156,23 +191,34 @@ public class TransactionInput extends JPanel {
 		lblNewLabel_2.setBounds(145, 0, 155, 25);
 		jpnlTransactionCheckout.add(lblNewLabel_2);
 		
-		table_1 = new JTable();
-		table_1.setBounds(0, 23, 300, 193);
-		jpnlTransactionCheckout.add(table_1);
+		order = new JTable();
+		order.setBounds(0, 23, 300, 193);
+		jpnlTransactionCheckout.add(order);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(0, 269, 300, 25);
-		jpnlTransactionCheckout.add(comboBox);
+		cmbSupplier = new JComboBox();
+		cmbSupplier.setBounds(0, 317, 300, 25);
+		jpnlTransactionCheckout.add(cmbSupplier);
+		FillCombo();
 		
 		JButton btnNewButton = new JButton("Submit Form");
 		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		btnNewButton.setBounds(103, 348, 101, 23);
+		btnNewButton.setBounds(103, 353, 101, 23);
 		jpnlTransactionCheckout.add(btnNewButton);
 		
 		JLabel lblNewLabel_3 = new JLabel("Supplier");
 		lblNewLabel_3.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		lblNewLabel_3.setBounds(0, 240, 68, 25);
+		lblNewLabel_3.setBounds(0, 293, 68, 25);
 		jpnlTransactionCheckout.add(lblNewLabel_3);
+		
+		JLabel lblnametotal = new JLabel("TOTAL:");
+		lblnametotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblnametotal.setBounds(0, 227, 135, 25);
+		jpnlTransactionCheckout.add(lblnametotal);
+		
+		JLabel lblTotal = new JLabel("");
+		lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblTotal.setBounds(103, 227, 168, 25);
+		jpnlTransactionCheckout.add(lblTotal);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		horizontalStrut.setPreferredSize(new Dimension(10, 0));
@@ -186,23 +232,18 @@ public class TransactionInput extends JPanel {
 		verticalStrut_1.setPreferredSize(new Dimension(0, 10));
 		add(verticalStrut_1);
 		
-		//add data to the product table
+		//ADD DATA TO THE PRODUCT TABLE
 		
-		try {
-			createconn();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		//Create a Statement object that will allow us to do operation
-        Statement objstmt = objCon.createStatement();
+			//Create a Statement object that will allow us to do operation
+        	Statement objstmt = objCon.createStatement();
         
-		String query = "SELECT * from products";
-		ResultSet rs = objstmt.executeQuery(query);
-		tblproducts.setModel(DbUtils.resultSetToTableModel(rs));
-		objstmt.close();
-		rs.close();
+        	String query = "SELECT * from products";
+        	ResultSet rs = objstmt.executeQuery(query);
+        	tblproducts.setModel(DbUtils.resultSetToTableModel(rs));
+        	objstmt.close();
+        	rs.close();
+       
+       
 		
 
 	}
@@ -222,4 +263,39 @@ public class TransactionInput extends JPanel {
 	    }
 	
 	}
+	
+	//ADDING ROW IN ORDER TABLE
+	
+	 public static void AddRow(Object[] row){
+	        DefaultTableModel bagModel = (DefaultTableModel)order.getModel();
+	        bagModel.addRow(row);
+	    }
+	 
+	 //ADD DATA IN SUPPLIER COMBO BOX
+	 
+	 private void FillCombo() {
+		
+		 try {
+			//Create a Statement object that will allow us to do operation
+	         Statement objstmt = objCon.createStatement();
+	         
+	         //Create the statement that will manipulate data
+	         String query = "SELECT supplier_name FROM supplier";
+	         
+	        ResultSet rs = objstmt.executeQuery(query);
+	 		
+	        while(rs.next()) {
+	        	String name = rs.getString(1);
+				cmbSupplier.addItem(name);
+	        }
+	       
+	 		objstmt.close();
+	 		rs.close();
+	         
+	         
+		 }catch(SQLException ex) {
+		    	JOptionPane.showMessageDialog(null,ex);
+		    }
+		 
+	 }
 }
