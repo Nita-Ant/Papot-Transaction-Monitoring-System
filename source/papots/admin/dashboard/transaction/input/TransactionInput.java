@@ -6,9 +6,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import papots.admin.main.dashboard.MainFrame;
@@ -19,7 +25,14 @@ import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.JButton;
+
+import javax.swing.JScrollPane;
+
+
 
 public class TransactionInput extends JPanel {
 	
@@ -32,16 +45,18 @@ public class TransactionInput extends JPanel {
 	 * Dashboard that owns the panel
 	 */
 	protected MainFrame mainFrame;
-	private JTable table;
+	private JTable tblproducts;
 	private JTable table_1;
+	Connection objCon;
+	
 
 	/**
 	 * Create the panel.
+	 * @throws SQLException 
 	 */
-	public TransactionInput() {
+	public TransactionInput() throws SQLException {
 		setBackground(new Color(255, 204, 204));
-		setMinimumSize(new Dimension(540, 10));
-		setMaximumSize(new Dimension(540, 32767));
+		setMinimumSize(new Dimension(750, 10));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel jpnlTransactionsHeader = new JPanel();
@@ -105,8 +120,19 @@ public class TransactionInput extends JPanel {
 		jpnlTransactionsForm.add(jpnlProductsTable);
 		jpnlProductsTable.setLayout(new CardLayout(0, 0));
 		
-		table = new JTable();
-		jpnlProductsTable.add(table, "name_71879449788400");
+	
+		
+		
+		//add table 
+		tblproducts = new JTable();
+		tblproducts.setFillsViewportHeight(true);
+		tblproducts.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+		
+		
+		//add scrollpane
+		JScrollPane scrollPane = new JScrollPane();
+		jpnlProductsTable.add(scrollPane, "name_351323148101700");
+		scrollPane.setViewportView(tblproducts);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		horizontalStrut_1.setPreferredSize(new Dimension(5, 0));
@@ -160,7 +186,40 @@ public class TransactionInput extends JPanel {
 		verticalStrut_1.setPreferredSize(new Dimension(0, 10));
 		add(verticalStrut_1);
 		
+		//add data to the product table
+		
+		try {
+			createconn();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//Create a Statement object that will allow us to do operation
+        Statement objstmt = objCon.createStatement();
+        
+		String query = "SELECT * from products";
+		ResultSet rs = objstmt.executeQuery(query);
+		tblproducts.setModel(DbUtils.resultSetToTableModel(rs));
+		objstmt.close();
+		rs.close();
 		
 
+	}
+	
+	void createconn() throws ClassNotFoundException{
+	    try {
+	        
+	            //load the driver
+	           Class.forName("com.mysql.cj.jdbc.Driver");
+	           
+	           //connect to the database
+	           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "root", "haycab99");
+	           
+	           
+	    }catch(SQLException ex) {
+	    	JOptionPane.showMessageDialog(null,ex);
+	    }
+	
 	}
 }
