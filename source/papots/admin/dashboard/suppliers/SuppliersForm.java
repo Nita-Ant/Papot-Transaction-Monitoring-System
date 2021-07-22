@@ -1,12 +1,20 @@
 package papots.admin.dashboard.suppliers;
 
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,6 +34,8 @@ public class SuppliersForm extends JPanel {
 	private JTextField jtxtfldSupplierID;
 	private JTextField jtxtfldSupplierName;
 	private JTextField jtxtfldSupplierAddress;
+	private String name,address,id;
+	Connection objCon;
 	
 	/**
 	 * Dashboard that owns the panel
@@ -154,14 +164,82 @@ public class SuppliersForm extends JPanel {
 		jpnlSuppliersForm.add(jtxtfldSupplierAddress, gbc_jtxtfldSupplierAddress);
 		jtxtfldSupplierAddress.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Submit");
-		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
-		gbc_btnNewButton.gridx = 2;
-		gbc_btnNewButton.gridy = 5;
-		jpnlSuppliersForm.add(btnNewButton, gbc_btnNewButton);
-
+		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
+		gbc_btnSubmit.anchor = GridBagConstraints.EAST;
+		gbc_btnSubmit.gridx = 2;
+		gbc_btnSubmit.gridy = 5;
+		jpnlSuppliersForm.add(btnSubmit, gbc_btnSubmit);
+		
+		try {
+			createconn();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		
+		//add action listener to submit
+		btnSubmit.addActionListener(new ActionListener() {
+		
+		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					
+					id = jtxtfldSupplierID.getText();
+					name = jtxtfldSupplierName.getText();
+					address = jtxtfldSupplierAddress.getText();
+					
+					//Create a Statement object that will allow us to do operation
+	                Statement objstmt = objCon.createStatement();
+	                
+	                //Create the statement that will manipulate data
+	                String strOp = "INSERT INTO supplier(supplier_id,supplier_name,supplier_address) VALUES ('"+id.toUpperCase()+"', '"+name+"', '"+address+"') ";
+	                
+	                //insert into the database
+	                objstmt.execute(strOp);
+	                objstmt.close();
+	                
+	                //clear out
+	                JOptionPane.showMessageDialog(null, "Successfully Registered");
+	                jtxtfldSupplierID.setText("");
+	                jtxtfldSupplierName.setText("");
+	                jtxtfldSupplierAddress.setText("");
+	               
+					
+				}catch(Exception ex){
+	                
+					JOptionPane.showMessageDialog(null,"Invalid input. Please check your input and try again");
+					 jtxtfldSupplierID.setText("");
+		             jtxtfldSupplierName.setText("");
+		             jtxtfldSupplierAddress.setText("");
+	            }
+				
+				
+			}
+				
+				
+		        });
+				
 	}
-
+	
+	void createconn() throws ClassNotFoundException{
+	    try {
+	        
+	            //load the driver
+	           Class.forName("com.mysql.cj.jdbc.Driver");
+	           
+	           //connect to the database
+	           objCon = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "root", "haycab99");
+	           
+	           
+	    }catch(SQLException ex) {
+	    	JOptionPane.showMessageDialog(null,ex);
+	    }
+	
+	}
 }
