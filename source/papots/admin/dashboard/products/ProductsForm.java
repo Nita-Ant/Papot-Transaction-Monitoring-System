@@ -9,13 +9,19 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
@@ -29,6 +35,11 @@ public class ProductsForm extends JPanel {
 	
 	private JTextField jtxtfldProductID;
 	private JTextField jtxtfldProductName;
+	private JRadioButton jrdbtnBundleSoftToys;
+	private JRadioButton jrdbtnSoloSoftToys;
+	private JRadioButton jrdbtnBundleHardToys;
+	private JRadioButton jrdbtnSoloHardToys;
+	
 	
 	/**
 	 * Dashboard that owns the panel
@@ -84,9 +95,9 @@ public class ProductsForm extends JPanel {
 		jpnlProductsForm.setBackground(new Color(255, 204, 204));
 		add(jpnlProductsForm);
 		GridBagLayout gbl_jpnlProductsForm = new GridBagLayout();
-		gbl_jpnlProductsForm.columnWidths = new int[]{0, 0, 316, 0};
-		gbl_jpnlProductsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_jpnlProductsForm.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_jpnlProductsForm.columnWidths = new int[]{0, 0, 350, 0, 0, 0};
+		gbl_jpnlProductsForm.rowHeights = new int[]{0, 0, 0, 96, 0, 0};
+		gbl_jpnlProductsForm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_jpnlProductsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		jpnlProductsForm.setLayout(gbl_jpnlProductsForm);
 		
@@ -100,10 +111,11 @@ public class ProductsForm extends JPanel {
 		jpnlProductsForm.add(jlblProdID, gbc_jlblProdID);
 		
 		jtxtfldProductID = new JTextField();
+		jtxtfldProductID.setMinimumSize(new Dimension(300, 20));
 		jtxtfldProductID.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		GridBagConstraints gbc_jtxtfldProductID = new GridBagConstraints();
 		gbc_jtxtfldProductID.fill = GridBagConstraints.HORIZONTAL;
-		gbc_jtxtfldProductID.insets = new Insets(0, 0, 5, 0);
+		gbc_jtxtfldProductID.insets = new Insets(0, 0, 5, 5);
 		gbc_jtxtfldProductID.gridx = 2;
 		gbc_jtxtfldProductID.gridy = 1;
 		jpnlProductsForm.add(jtxtfldProductID, gbc_jtxtfldProductID);
@@ -119,10 +131,12 @@ public class ProductsForm extends JPanel {
 		jpnlProductsForm.add(jlblProdName, gbc_jlblProdName);
 		
 		jtxtfldProductName = new JTextField();
+		jtxtfldProductName.setMaximumSize(new Dimension(300, 2147483647));
+		jtxtfldProductName.setMinimumSize(new Dimension(300, 20));
 		jtxtfldProductName.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		GridBagConstraints gbc_jtxtfldProductName = new GridBagConstraints();
-		gbc_jtxtfldProductName.insets = new Insets(0, 0, 5, 0);
 		gbc_jtxtfldProductName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_jtxtfldProductName.insets = new Insets(0, 0, 5, 5);
 		gbc_jtxtfldProductName.gridx = 2;
 		gbc_jtxtfldProductName.gridy = 2;
 		jpnlProductsForm.add(jtxtfldProductName, gbc_jtxtfldProductName);
@@ -137,13 +151,61 @@ public class ProductsForm extends JPanel {
 		gbc_lblNewLabel_3.gridy = 3;
 		jpnlProductsForm.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		JComboBox jcmbbxProductType = new JComboBox();
-		GridBagConstraints gbc_jcmbbxProductType = new GridBagConstraints();
-		gbc_jcmbbxProductType.insets = new Insets(0, 0, 5, 0);
-		gbc_jcmbbxProductType.fill = GridBagConstraints.HORIZONTAL;
-		gbc_jcmbbxProductType.gridx = 2;
-		gbc_jcmbbxProductType.gridy = 3;
-		jpnlProductsForm.add(jcmbbxProductType, gbc_jcmbbxProductType);
+		JPanel jpnlRBProductType = new JPanel();
+		jpnlRBProductType.setMaximumSize(new Dimension(20, 32767));
+		jpnlRBProductType.setBackground(new Color(255, 204, 204));
+		GridBagConstraints gbc_jpnlRBProductType = new GridBagConstraints();
+		gbc_jpnlRBProductType.anchor = GridBagConstraints.WEST;
+		gbc_jpnlRBProductType.insets = new Insets(0, 0, 5, 5);
+		gbc_jpnlRBProductType.gridx = 2;
+		gbc_jpnlRBProductType.gridy = 3;
+		jpnlProductsForm.add(jpnlRBProductType, gbc_jpnlRBProductType);
+		GridBagLayout gbl_jpnlRBProductType = new GridBagLayout();
+		gbl_jpnlRBProductType.columnWidths = new int[]{109, 109, 109, 109, 0};
+		gbl_jpnlRBProductType.rowHeights = new int[]{23, 0};
+		gbl_jpnlRBProductType.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_jpnlRBProductType.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		
+		ButtonGroup btngrpProductType = new ButtonGroup();
+		jpnlRBProductType.setLayout(new BoxLayout(jpnlRBProductType, BoxLayout.Y_AXIS));
+		{
+			jrdbtnBundleHardToys = new JRadioButton("Bundle HardToys");
+			jrdbtnBundleHardToys.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+			jrdbtnBundleHardToys.setBackground(new Color(255, 204, 204));
+			jpnlRBProductType.add(jrdbtnBundleHardToys);
+			btngrpProductType.add(jrdbtnBundleHardToys);
+		}
+		{
+			jrdbtnBundleSoftToys = new JRadioButton("Bundle SoftToys");
+			jrdbtnBundleSoftToys.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+			jrdbtnBundleSoftToys.setBackground(new Color(255, 204, 204));
+			jpnlRBProductType.add(jrdbtnBundleSoftToys);
+			btngrpProductType.add(jrdbtnBundleSoftToys);
+		}
+		{
+			jrdbtnSoloSoftToys = new JRadioButton("Solo SoftToys");
+			jrdbtnSoloSoftToys.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+			jrdbtnSoloSoftToys.setBackground(new Color(255, 204, 204));
+			jpnlRBProductType.add(jrdbtnSoloSoftToys);
+			btngrpProductType.add(jrdbtnSoloSoftToys);
+		}
+		{
+			jrdbtnSoloHardToys = new JRadioButton("Solo HardToys");
+			jrdbtnSoloHardToys.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+			jrdbtnSoloHardToys.setBackground(new Color(255, 204, 204));
+			jpnlRBProductType.add(jrdbtnSoloHardToys);
+			btngrpProductType.add(jrdbtnSoloHardToys);
+		}
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+		gbc_horizontalStrut.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut.gridx = 3;
+		gbc_horizontalStrut.gridy = 3;
+		jpnlProductsForm.add(horizontalStrut, gbc_horizontalStrut);
+		
+		
+		
 		
 		JLabel lblNewLabel_4 = new JLabel("Product Description:");
 		lblNewLabel_4.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -161,7 +223,7 @@ public class ProductsForm extends JPanel {
 		
 		JTextPane jtxtpnProductDescription = new JTextPane();
 		jtxtpnProductDescription.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		jtxtpnProductDescription.setBounds(31, 0, 429, 189);
+		jtxtpnProductDescription.setBounds(10, 0, 465, 189);
 		jpnlProductDescription.add(jtxtpnProductDescription);
 		
 		JPanel jpnlButtons = new JPanel();
@@ -172,9 +234,37 @@ public class ProductsForm extends JPanel {
 		add(jpnlButtons);
 		jpnlButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnNewButton = new JButton("Submit Product");
-		btnNewButton.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		jpnlButtons.add(btnNewButton);
+		JButton jbtnSubmitProduct = new JButton("Submit Product");
+		jbtnSubmitProduct.addActionListener(event -> {
+			try {
+				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "papot-admin", "admin-pass123");
+				Statement statement = connection.createStatement();
+				
+				//String holder for product type 
+				String strProdTypeInput = " " ;
+				
+				/*Condition for the button group in Product Type */
+				if (jrdbtnBundleHardToys.isSelected())
+					strProdTypeInput = "Bundle_HardToys";
+				else if (jrdbtnBundleSoftToys.isSelected())
+					strProdTypeInput = "Bundle_SoftToys"; 
+				else if (jrdbtnSoloHardToys.isSelected())
+					strProdTypeInput = "Solo_HardToys";
+				else if (jrdbtnSoloSoftToys.isSelected())
+					strProdTypeInput = "Solo_SoftToys";
+				
+				
+				statement.execute("INSERT INTO products VALS { product_id = '" + jtxtfldProductID.getText() + "', product_name = '" + jtxtfldProductName + 
+									"', product_description ='" + jtxtpnProductDescription.getText() + "', product_type = '" + strProdTypeInput + "')");
+				JOptionPane.showMessageDialog(null, "Product item successfully saved!");
+				
+			} catch(SQLException e) {
+			  JOptionPane.showMessageDialog(null, "An error occured while saving.\n\n Details:" + e);
+			}
+		});
+		
+		jbtnSubmitProduct.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		jpnlButtons.add(jbtnSubmitProduct);
 
 	}
 }
