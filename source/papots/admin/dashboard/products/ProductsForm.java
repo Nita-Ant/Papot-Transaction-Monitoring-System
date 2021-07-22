@@ -254,7 +254,7 @@ public class ProductsForm extends JPanel {
 					strProdTypeInput = "Solo_SoftToys";
 				
 				
-				statement.execute("INSERT INTO products VALS { product_id = '" + jtxtfldProductID.getText() + "', product_name = '" + jtxtfldProductName + 
+				statement.execute("INSERT INTO products VALUES { product_id = '" + jtxtfldProductID.getText() + "', product_name = '" + jtxtfldProductName + 
 									"', product_description ='" + jtxtpnProductDescription.getText() + "', product_type = '" + strProdTypeInput + "')");
 				JOptionPane.showMessageDialog(null, "Product item successfully saved!");
 				
