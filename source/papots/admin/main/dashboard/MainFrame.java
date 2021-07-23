@@ -3,6 +3,7 @@ package papots.admin.main.dashboard;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.sql.SQLException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -66,11 +67,13 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	public MainFrame() {
+	public MainFrame() throws SQLException, ClassNotFoundException {
 		setResizable(false);
 		setTitle("Papot's Dashboard");
-		setMinimumSize(new Dimension(800, 50));
+		setMinimumSize(new Dimension(1200, 50));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 532);
 		
