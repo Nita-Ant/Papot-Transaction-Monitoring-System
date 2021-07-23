@@ -33,9 +33,30 @@ import java.util.Date;
 public class OrderDetails extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private int transaction_no = 0007;
-	Connection objCon;
 	protected TransactionInput objInput;
+	protected DeliveryDetails objDet; 
+	Connection objCon;
+	
+	//for reference
+	private String date;
+	String getDate() {
+		return date;
+	}
+
+	void setDate(String date) {
+		this.date = date;
+	}
+
+	String getStatus() {
+		return status;
+	}
+
+	void setStatus(String status) {
+		this.status = status;
+	}
+
+	private String status;
+
 
 	/**
 	 * Create the dialog.
@@ -43,6 +64,11 @@ public class OrderDetails extends JDialog {
 	 * @throws ClassNotFoundException 
 	 */
 	public OrderDetails() throws SQLException, ClassNotFoundException {
+		
+		
+		//CONNECT DELIVERY DETAILS TO THIS DIALOG
+		DeliveryDetails objDetails = new DeliveryDetails();
+		objDetails.objOrder = this;
 		
 		
 		setBounds(100, 100, 478, 300);
@@ -109,7 +135,7 @@ public class OrderDetails extends JDialog {
 		btStatus.add(rdbtnPending);
 		
 		//CREATE CONNECTION
-		//createconn();
+		createconn();
 		
 		
 		//add action listener to submit
@@ -118,81 +144,61 @@ public class OrderDetails extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						
 						try {
+							//format Date
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+							date = sdf.format(calOrder.getDate());
+							
+							//get the selected radio button
+							status = btStatus.getSelection().getActionCommand();
+							
+							
 							// TODO Auto-generated method stub
 							if(rdbtnOnHand.isSelected()) {
 								
-								//format Date
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-								String date = sdf.format(calOrder.getDate());
-								
-								
-								//get the selected radio button
-								String status = btStatus.getSelection().getActionCommand();
 								
 								dispose();
-								DeliveryDetails objDet = new DeliveryDetails();
+								
+								
+								//CONNECT DELIVERY DETAILS TO THIS TRANSACTIONINPUT
+								objDet = new DeliveryDetails();
+								objDet.objInput = objInput;
+								objDet.objOrder = OrderDetails.this;
+								
 								objDet.setVisible(true);
 								
-								
 							}else if (rdbtnPending.isSelected()){
-								//format Date
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-								String date = sdf.format(calOrder.getDate());
+					
+								int OrderStatus = 0;
 								
-								
-								//get the selected radio button
-								String status = btStatus.getSelection().getActionCommand();
-								
-								//add the data to database
-									
-									//SUPPLY COST PRICE
-									Date d = new Date();
-									int Year = d.getYear() + 1900;
-									String transaction = Year + "-" + transaction_no;
-									
-									int row = objInput.order.getRowCount();
-									System.out.println(row);
-									
-									/*
-									for (int j = 0; j  < row; j++) {
-										
-	        							String Prod_ID = (String) objInput.order.getValueAt(j, 0);
-	        							int intQTY = (int) objInput.order.getValueAt(j, 1);
-	        							float fltprice = (float) objInput.order.getValueAt(j, 2);
-	        							float fltTotal = (float) objInput.order.getValueAt(j, 3);
+	        					//ADD TO THE DATABASE
 	        							
-	        							/*
-	        							//ADD TO THE DATABASE
-	        							
-	        							//Create a Statement object that will allow us to do operation
-	        			                Statement objstmt = objCon.createStatement();
+								//Create a Statement object that will allow us to do operation
+								Statement objstmt = objCon.createStatement();
 	        			                
-	        			                //Create the statement that will manipulate data
-	        			                String strOp = "INSERT INTO supplycostprice(transaction_no,product_id,product_qty,unit_price,total_prod_price) VALUES ('"+transaction+"', '"+Prod_ID+"', '"+intQTY+"', '"+fltprice+"', '"+fltTotal+"')";
-	        			                
-	        			                //insert into the database
-	        			                objstmt.execute(strOp);
-	        			                objstmt.close();
-	        			                */
-	        							
-	        							//System.out.println
-	        							//System.out.println();
-									
-									}
-									
-									//CLEAR OUT THE TABLE ORDER TABLE 
-									//DefaultTableModel model = (DefaultTableModel) .getModel();
-							        //model.setRowCount(0);
-							        //objInput..setEnabled(false);
-							        
-							        //EXIT
-							        dispose();
-							        
-							        //*/
-							//}
+	        			        //Create the statement that will manipulate data
+	        			        String strOp = "INSERT INTO transaction(transaction_no,order_date, supplier_id, order_status,subtotal) VALUES ('"+objInput.getTransaction()+"','"+ date +"','"+objInput.getSupplier()+"', '"+OrderStatus+"', '"+objInput.getGrand_total()+"')";
+	        			              
+	        			        //insert into the database
+	        			        objstmt.execute(strOp);
+	        			        objstmt.close();
+	        			        
+	        			        JOptionPane.showMessageDialog(null,"Successfully Added");
+	        			        calOrder.setDate(null);
+	        			        btStatus.clearSelection();
+	        			        dispose();
+	        			        objInput.setGrand_total(0);
+	   
+							}
+							
+							calOrder.setDate(null);
+        			        btStatus.clearSelection();
+        			        dispose();
+        			        objInput.setGrand_total(0);
+   
+								
 							
 						}catch (Exception ex) {
-							JOptionPane.showMessageDialog(null, ex);
+							JOptionPane.showMessageDialog(null, "Invalid input. Please Try Again");
 						}
 						
 					}
