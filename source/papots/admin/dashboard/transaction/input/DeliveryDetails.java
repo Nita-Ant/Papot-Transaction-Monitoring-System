@@ -21,22 +21,7 @@ public class DeliveryDetails extends JDialog {
 	private JTextField txtMOD;
 	private JTextField txtShipFee;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			DeliveryDetails dialog = new DeliveryDetails();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
-	 */
+	
 	public DeliveryDetails() {
 		setBounds(100, 100, 452, 326);
 		getContentPane().setLayout(new BorderLayout());
@@ -59,9 +44,12 @@ public class DeliveryDetails extends JDialog {
 		
 		txtShipFee = new JTextField();
 		txtShipFee.setColumns(10);
+		
+		JButton btnOK = new JButton("OK");
+		btnOK.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(24)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
@@ -75,6 +63,10 @@ public class DeliveryDetails extends JDialog {
 							.addComponent(CalReceived, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
 						.addComponent(txtShipFee, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(24, Short.MAX_VALUE))
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addContainerGap(369, Short.MAX_VALUE)
+					.addComponent(btnOK)
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -85,30 +77,21 @@ public class DeliveryDetails extends JDialog {
 						.addComponent(lblMOD, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(29)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(txtMOD)
+						.addComponent(txtMOD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblReceived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(36)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblShipfee)
 						.addComponent(txtShipFee, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(38, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+					.addComponent(btnOK)
+					.addContainerGap())
 		);
 		contentPanel.setLayout(gl_contentPanel);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				buttonPane.add(cancelButton);
-			}
-		}
+		
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
+	
+	
 	}
 }
