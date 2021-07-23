@@ -187,7 +187,7 @@ public class TransactionDashboard extends JPanel {
 	           Class.forName("com.mysql.cj.jdbc.Driver");
 
 	           //connect to the database
-	           objConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "root", "Sql070400#root");
+	           objConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "root", "haycab99");
 
 
 	    }catch(SQLException ex) {
