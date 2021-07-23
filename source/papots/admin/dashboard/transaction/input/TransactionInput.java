@@ -343,6 +343,12 @@ public class TransactionInput extends JPanel {
 					 
 					 grand_total+=total;
 					 lblTotal.setText(Float.toString(grand_total));
+					 
+					 objDlg.dispose();
+					 intQty = 0;
+					 fltPrice = 0;
+					 total = 0;
+					 selectedRowIndex = -1;
 					}
 					
 					
@@ -402,7 +408,7 @@ public class TransactionInput extends JPanel {
     							JOptionPane.showMessageDialog(null, "Invalid Input. Please Try Again");
     							DefaultTableModel model = (DefaultTableModel) order.getModel();
     							model.setRowCount(0);
-    							objOrder.setVisible(true); btnSubmit.setEnabled(false);
+    							btnSubmit.setEnabled(false);
 						        lblTotal.setText("");
     						}
     						

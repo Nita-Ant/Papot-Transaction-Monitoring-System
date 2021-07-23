@@ -39,6 +39,11 @@ public class DlgAsk extends JDialog {
 	 */
 	public DlgAsk() {
 		
+		//SETTING THE DIALOG
+		this.setModal(true);
+		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo(null);	
+		
 		setBounds(100, 100, 396, 325);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -120,10 +125,7 @@ public class DlgAsk extends JDialog {
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
-		//SETTING THE DIALOG
-		this.setModal(true);
-		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);		        
+			        
 		
 		
 	}

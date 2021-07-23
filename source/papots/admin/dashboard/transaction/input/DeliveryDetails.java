@@ -117,44 +117,47 @@ public class DeliveryDetails extends JDialog {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					String date = sdf.format(calReceived.getDate());
 					
-					/*
+					
 					//CHECKING OF VALIDATION OF DATES
-					java.util.Date start = new SimpleDateFormat("yyyy/MM/dd").parse(date);
-		            java.util.Date end = new SimpleDateFormat("yyyy/MM/dd").parse(objOrder.getDate());
-		            
-		            if (start.compareTo(end) < 0) {
+					
+		            if (date.compareTo(objOrder.getDate()) < 0) {
 		                JOptionPane.showMessageDialog(null, "Invalid Date. Please try again");
-		            } 
-					*/
+		                calReceived.setDate(null);
+				        txtShipFee.setText("");
+				        txtMOD.setText("");
+		            } else {
+		            	//GET THE SHIP_FEE
+						float ShipFee = Float.parseFloat(txtShipFee.getText());
+						
+						//GET MOD
+						String MOD = txtMOD.getText();
+						
+						//GET GRAND TOTAL
+						float grand_total = objInput.getGrand_total() + ShipFee;
+						
+						//ADD TO THE DATABASE		
+						//Create a Statement object that will allow us to do operation
+						Statement objstmt = objCon.createStatement();
+				                
+				        //Create the statement that will manipulate data
+				        String strOp = "INSERT INTO transaction(transaction_no,order_date, supplier_id, mode_of_delivery,order_status,date_received,subtotal,ship_fee,grand_total) VALUES ('"+objInput.getTransaction()+"','"+ objOrder.getDate()
+				        +"','"+objInput.getSupplier()+"', '"+MOD+"','"+OrderStatus+"', '"+date+"','"+objInput.getGrand_total()+"', '"+ShipFee+"', '"+grand_total+"')";
+				              
+				        //insert into the database
+				        objstmt.execute(strOp);
+				        objstmt.close();
+				        
+				        JOptionPane.showMessageDialog(null,"Successfully Added");
+				        calReceived.setDate(null);
+				        txtShipFee.setText("");
+				        txtMOD.setText("");
+				        dispose();
+				        objInput.setGrand_total(0);
+		            }
 					
 					
-					//GET THE SHIP_FEE
-					float ShipFee = Float.parseFloat(txtShipFee.getText());
 					
-					//GET MOD
-					String MOD = txtMOD.getText();
 					
-					//GET GRAND TOTAL
-					float grand_total = objInput.getGrand_total() + ShipFee;
-					
-					//ADD TO THE DATABASE		
-					//Create a Statement object that will allow us to do operation
-					Statement objstmt = objCon.createStatement();
-			                
-			        //Create the statement that will manipulate data
-			        String strOp = "INSERT INTO transaction(transaction_no,order_date, supplier_id, mode_of_delivery,order_status,date_received,subtotal,ship_fee,grand_total) VALUES ('"+objInput.getTransaction()+"','"+ objOrder.getDate()
-			        +"','"+objInput.getSupplier()+"', '"+MOD+"','"+OrderStatus+"', '"+date+"','"+objInput.getGrand_total()+"', '"+ShipFee+"', '"+grand_total+"')";
-			              
-			        //insert into the database
-			        objstmt.execute(strOp);
-			        objstmt.close();
-			        
-			        JOptionPane.showMessageDialog(null,"Successfully Added");
-			        calReceived.setDate(null);
-			        txtShipFee.setText("");
-			        txtMOD.setText("");
-			        dispose();
-			        objInput.setGrand_total(0);
 
 						
 					
@@ -167,6 +170,7 @@ public class DeliveryDetails extends JDialog {
 		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setModal(true);
 	
 	}
 	void createconn() throws ClassNotFoundException{
@@ -180,7 +184,7 @@ public class DeliveryDetails extends JDialog {
 	           
 	           
 	    }catch(SQLException ex) {
-	    	JOptionPane.showMessageDialog(null,ex);
+	    	JOptionPane.showMessageDialog(null,"Invalid input. Please try again.");
 	    }
 	
 	}
