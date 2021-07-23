@@ -133,6 +133,7 @@ public class TransactionInput extends JPanel {
 	 */
 	public TransactionInput() throws SQLException, ClassNotFoundException {
 		
+		
 		try {
 			createconn();
 		} catch (ClassNotFoundException e1) {
@@ -263,7 +264,7 @@ public class TransactionInput extends JPanel {
 		jpnlTransactionCheckout.add(cmbSupplier);
 		
 		//ADD DATA TO THE COMBO BOX 
-		FillCombo();
+		
 		supplier = (String) cmbSupplier.getSelectedItem();
 		
 		btnSubmit = new JButton("Submit Form");
@@ -306,17 +307,7 @@ public class TransactionInput extends JPanel {
 		DlgAsk objDlg = new DlgAsk();
 		objDlg.objInput = this;
 		
-		//ADD DATA TO THE PRODUCT TABLE
 		
-			//Create a Statement object that will allow us to do operation
-        	Statement objstmt = objCon.createStatement();
-        
-        	String query = "SELECT * from products";
-        	ResultSet rs = objstmt.executeQuery(query);
-        	tblproducts.setModel(DbUtils.resultSetToTableModel(rs));
-        	objstmt.close();
-        	rs.close();
-        
 
         //ADD SCROLL PANE TO PRODUCTS TABLE
     		JScrollPane scrollPane = new JScrollPane();
@@ -448,7 +439,7 @@ public class TransactionInput extends JPanel {
 	 
 	 //ADD DATA IN SUPPLIER COMBO BOX
 	 
-	 private void FillCombo() {
+	 public void FillCombo() {
 		
 		 try {
 			//Create a Statement object that will allow us to do operation
@@ -472,5 +463,20 @@ public class TransactionInput extends JPanel {
 		    	JOptionPane.showMessageDialog(null,ex);
 		    }
 		 
+	 }
+	 
+	 public void Refreshtbl() throws SQLException, ClassNotFoundException{
+		createconn();
+		//ADD DATA TO THE PRODUCT TABLE
+			
+			//Create a Statement object that will allow us to do operation
+     	Statement objstmt = objCon.createStatement();
+     
+     	String query = "SELECT * from products";
+     	ResultSet rs = objstmt.executeQuery(query);
+     	tblproducts.setModel(DbUtils.resultSetToTableModel(rs));
+     	objstmt.close();
+     	rs.close();
+     
 	 }
 }

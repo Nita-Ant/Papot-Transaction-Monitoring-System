@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -94,7 +95,12 @@ public class Sidebar extends JPanel {
 		
 		//Action Listener Code for Transaction Input 
 		jbtnTransactionInput.addActionListener(event -> {
-			mainFrame.showTransactionsForm();
+			try {
+				mainFrame.showTransactionsForm();
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 		add(jbtnTransactionInput);
 		/* END OF jbtnTransactionInput */
