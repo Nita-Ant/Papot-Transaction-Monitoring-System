@@ -68,8 +68,9 @@ public class MainFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	public MainFrame() throws SQLException {
+	public MainFrame() throws SQLException, ClassNotFoundException {
 		setResizable(false);
 		setTitle("Papot's Dashboard");
 		setMinimumSize(new Dimension(1200, 50));
