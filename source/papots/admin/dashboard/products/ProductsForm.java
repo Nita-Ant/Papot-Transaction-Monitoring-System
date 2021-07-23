@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -39,6 +41,9 @@ public class ProductsForm extends JPanel {
 	private JRadioButton jrdbtnSoloSoftToys;
 	private JRadioButton jrdbtnBundleHardToys;
 	private JRadioButton jrdbtnSoloHardToys;
+	private String prodID, prodName, prodDescription, prodType; 
+	
+	Connection objConn; 
 	
 	
 	/**
@@ -235,36 +240,84 @@ public class ProductsForm extends JPanel {
 		jpnlButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton jbtnSubmitProduct = new JButton("Submit Product");
-		jbtnSubmitProduct.addActionListener(event -> {
-			try {
-				Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "papot-admin", "admin-pass123");
-				Statement statement = connection.createStatement();
-				
-				//String holder for product type 
-				String strProdTypeInput = " " ;
-				
-				/*Condition for the button group in Product Type */
-				if (jrdbtnBundleHardToys.isSelected())
-					strProdTypeInput = "Bundle_HardToys";
-				else if (jrdbtnBundleSoftToys.isSelected())
-					strProdTypeInput = "Bundle_SoftToys"; 
-				else if (jrdbtnSoloHardToys.isSelected())
-					strProdTypeInput = "Solo_HardToys";
-				else if (jrdbtnSoloSoftToys.isSelected())
-					strProdTypeInput = "Solo_SoftToys";
-				
-				
-				statement.execute("INSERT INTO products VALUES { product_id = '" + jtxtfldProductID.getText() + "', product_name = '" + jtxtfldProductName + 
-									"', product_description ='" + jtxtpnProductDescription.getText() + "', product_type = '" + strProdTypeInput + "')");
-				JOptionPane.showMessageDialog(null, "Product item successfully saved!");
-				
-			} catch(SQLException e) {
-			  JOptionPane.showMessageDialog(null, "An error occured while saving.\n\n Details:" + e);
-			}
-		});
-		
 		jbtnSubmitProduct.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		jpnlButtons.add(jbtnSubmitProduct);
+		
+		try {
+			// initialize database connection
+			createconn();
+			
+		}catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		//add action listener to submit product button 
+		jbtnSubmitProduct.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					
+					// String holder for product type 
+					String strProdTypeInput = " " ;
+					
+					/*Condition for the button group in Product Type */
+					if (jrdbtnBundleHardToys.isSelected())
+						strProdTypeInput = "Bundle_HardToys";
+					else if (jrdbtnBundleSoftToys.isSelected())
+						strProdTypeInput = "Bundle_SoftToys"; 
+					else if (jrdbtnSoloHardToys.isSelected())
+						strProdTypeInput = "Solo_HardToys";
+					else if (jrdbtnSoloSoftToys.isSelected())
+						strProdTypeInput = "Solo_SoftToys";
+					
+					prodID = jtxtfldProductID.getText(); 
+					prodName = jtxtfldProductName.getText();
+					prodType = strProdTypeInput;
+					prodDescription = jtxtpnProductDescription.getText();
+							
+					Statement objStmt = objConn.createStatement();
+					
+					String strOperation = "INSERT INTO products(product_id, product_name, product_description, product_type) "
+											+ "VALUES ('"+prodID.toUpperCase()+"', '"+prodName+"', '"+prodDescription+"', '"+prodType+"')";
+					
+					objStmt.execute(strOperation);
+					objStmt.close();
+					
+					// clears the text field and other user's previous input 
+					JOptionPane.showMessageDialog(null, "Successfully Registered");
+	                jtxtfldProductID.setText("");
+	                jtxtfldProductName.setText("");
+	                jtxtpnProductDescription.setText("");
+	                
+				}catch(Exception ex) {
+					JOptionPane.showMessageDialog(null,"Invalid input. Please check your input and try again");
+					jtxtfldProductID.setText("");
+	                jtxtfldProductName.setText("");
+	                jtxtpnProductDescription.setText("");
+				}
+			}
+		});
+				
 
 	}
+	
+	void createconn() throws ClassNotFoundException{
+	    try {
+	        
+	            //load the driver
+	           Class.forName("com.mysql.cj.jdbc.Driver");
+	           
+	           //connect to the database
+	           objConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/papot-db", "root", "haycab99");
+	           
+	           
+	    }catch(SQLException ex) {
+	    	JOptionPane.showMessageDialog(null,ex);
+	    }
+	
+	}
 }
+
+
