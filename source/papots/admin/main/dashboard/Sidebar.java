@@ -73,6 +73,10 @@ public class Sidebar extends JPanel {
 		jbtnMonitoring.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		jbtnMonitoring.setForeground(new Color(255, 255, 255));
 		jbtnMonitoring.setBounds(10, 188, 230, 23);
+		//Action Listener Code for Transaction Dashboard Status
+				jbtnMonitoring.addActionListener(event -> {
+					mainFrame.showTransactionsDashboard();
+				});
 		add(jbtnMonitoring);
 		/* END OF jbtnMonitroing */
 		
