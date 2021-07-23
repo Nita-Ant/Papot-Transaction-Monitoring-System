@@ -151,8 +151,10 @@ public class MainFrame extends JFrame {
 	
 	/**
 	 * Shows the Transactions Form Panel
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	public void showTransactionsForm() {
+	public void showTransactionsForm() throws ClassNotFoundException, SQLException {
 		
 		if(jpnlCurrentShownPanel==transactionInput)
 			return;
@@ -166,6 +168,8 @@ public class MainFrame extends JFrame {
 		jpnlContentPane.add(transactionInput);
 		revalidate();
 		repaint();
+		transactionInput.FillCombo();
+		transactionInput.Refreshtbl();
 	}
 	
 	/**
