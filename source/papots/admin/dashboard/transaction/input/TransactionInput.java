@@ -408,7 +408,7 @@ public class TransactionInput extends JPanel {
     							JOptionPane.showMessageDialog(null, "Invalid Input. Please Try Again");
     							DefaultTableModel model = (DefaultTableModel) order.getModel();
     							model.setRowCount(0);
-    							objOrder.setVisible(true); btnSubmit.setEnabled(false);
+    							btnSubmit.setEnabled(false);
 						        lblTotal.setText("");
     						}
     						
