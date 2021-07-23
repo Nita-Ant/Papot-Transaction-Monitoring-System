@@ -343,6 +343,12 @@ public class TransactionInput extends JPanel {
 					 
 					 grand_total+=total;
 					 lblTotal.setText(Float.toString(grand_total));
+					 
+					 objDlg.dispose();
+					 intQty = 0;
+					 fltPrice = 0;
+					 total = 0;
+					 selectedRowIndex = -1;
 					}
 					
 					
