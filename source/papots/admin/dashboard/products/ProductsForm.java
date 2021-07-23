@@ -286,7 +286,7 @@ public class ProductsForm extends JPanel {
 					objStmt.close();
 					
 					// clears the text field and other user's previous input 
-					JOptionPane.showMessageDialog(null, "Successfully Registered");
+					JOptionPane.showMessageDialog(null, "Product Succesfully added in your database!");
 	                jtxtfldProductID.setText("");
 	                jtxtfldProductName.setText("");
 	                jtxtpnProductDescription.setText("");
