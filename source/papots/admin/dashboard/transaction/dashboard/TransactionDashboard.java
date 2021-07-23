@@ -133,12 +133,14 @@ public class TransactionDashboard extends JPanel {
 				try {
 					Statement objStmt = objConn.createStatement();
 					
-					String strQuery = "SELECT transaction_no, order_date, supplier_id, mode_of_delivery, grand_total"
-										+ "FROM transaction"
-										+ "WHERE order_status = '0';";
+					String strQuery = "SELECT transaction_no, order_date, supplier_id, mode_of_delivery, grand_total FROM transaction WHERE order_status <> 1";
 					
 					ResultSet rsPendingTable = objStmt.executeQuery(strQuery);
 					tblPendingOrders.setModel(DbUtils.resultSetToTableModel(rsPendingTable));
+					
+					// Close connections 
+					rsPendingTable.close();
+					objStmt.close();
 					
 				}catch (Exception ex) {
 					ex.printStackTrace();
@@ -160,9 +162,7 @@ public class TransactionDashboard extends JPanel {
 				try {
 					Statement objStmt = objConn.createStatement();
 					
-					String strQuery = "SELECT transaction_no, order_date, supplier_id, mode_of_delivery, grand_total"
-										+ "FROM transaction"
-										+ "WHERE order_status = '1';";
+					String strQuery = "SELECT transaction_no, order_date, supplier_id, mode_of_delivery, grand_total FROM transaction WHERE order_status = 1";
 					
 					ResultSet rsOHOrdersTable = objStmt.executeQuery(strQuery);
 					tblOnHandOrders.setModel(DbUtils.resultSetToTableModel(rsOHOrdersTable));
