@@ -11,6 +11,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.function.Supplier;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -47,7 +49,7 @@ import javax.swing.ListSelectionModel;
 
 public class TransactionInput extends JPanel {
 	
-	protected OrderDetails objDets;
+	private int transaction_no = 7;
 	
 	/**
 	 * 
@@ -62,13 +64,46 @@ public class TransactionInput extends JPanel {
 	protected JTable order;
 	private int intQty = 0;
 	private float fltPrice = 0;
-	private float grand_total = 0;
+	
 	protected JButton btnSubmit;
 	
-	/*
-	private String date;
-	private String status;
-	*/
+	//for reference
+	private String transaction;
+	private String supplier;
+	private float grand_total = 0;
+	
+	
+	String getTransaction() {
+		return transaction;
+	}
+
+
+	void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+
+	String getSupplier() {
+		return supplier;
+	}
+
+
+	void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+
+	float getGrand_total() {
+		return grand_total;
+	}
+
+
+	void setGrand_total(float grand_total) {
+		this.grand_total = grand_total;
+	}
+
+	
+	
 	int getIntQty() {
 		return intQty;
 	}
@@ -105,10 +140,11 @@ public class TransactionInput extends JPanel {
 			e1.printStackTrace();
 		}
 		
-		/*CONNECT ORDER DETAILS TO THIS FORM
+		//CONNECT ORDER DETAILS TO THIS FORM
 		OrderDetails objOrder = new OrderDetails();
 		objOrder.objInput = this;
-		*/
+		
+		
 		
 		setBackground(new Color(255, 204, 204));
 		setMinimumSize(new Dimension(750, 10));
@@ -228,6 +264,7 @@ public class TransactionInput extends JPanel {
 		
 		//ADD DATA TO THE COMBO BOX 
 		FillCombo();
+		supplier = (String) cmbSupplier.getSelectedItem();
 		
 		btnSubmit = new JButton("Submit Form");
 		btnSubmit.setFont(new Font("Segoe UI", Font.PLAIN, 12));
@@ -330,11 +367,58 @@ public class TransactionInput extends JPanel {
     		btnSubmit.addActionListener(new ActionListener() {
     			 public void actionPerformed(ActionEvent evt) {
     	                
-    				 btnSubmitActionPerformed(evt);
+    						
+    						try {
+    							
+    							//SUPPLY COST PRICE
+    							Date d = new Date();
+    							int Year = d.getYear() + 1900;
+    							String no = String.format("%04d", transaction_no);
+    							transaction = Year + "-" + no;
+    							
+    							int row = order.getRowCount();
+    							
+    							for (int j = 0; j  < row; j++) {
+    								
+    								String Prod_ID = (String)order.getValueAt(j, 0);
+    								int intQTY = (int) order.getValueAt(j, 1);
+    								float fltprice = (float) order.getValueAt(j, 2);
+    								float fltTotal = (float) order.getValueAt(j, 3);
+    								
+    								
+    								//ADD TO THE DATABASE
+    								
+    								//Create a Statement object that will allow us to do operation
+    				                Statement objstmt = objCon.createStatement();
+    				                
+    				                //Create the statement that will manipulate data
+    				                String strOp = "INSERT INTO supplycostprice(transaction_no,product_id,product_qty,unit_price,total_prod_price) VALUES ('"+transaction+"', '"+Prod_ID+"', '"+intQTY+"', '"+fltprice+"', '"+fltTotal+"')";
+    				                
+    				                //insert into the database
+    				                objstmt.execute(strOp);
+    				                objstmt.close();
+    							}
+    							DefaultTableModel model = (DefaultTableModel) order.getModel();
+    							model.setRowCount(0);
+    							objOrder.setVisible(true); btnSubmit.setEnabled(false);
+						        lblTotal.setText("");
+						        ++transaction_no;
+						        
+    							
+    							
+    							
+    						} catch (Exception ex) {
+    							JOptionPane.showMessageDialog(null, "Invalid Input. Please Try Again");
+    							DefaultTableModel model = (DefaultTableModel) order.getModel();
+    							model.setRowCount(0);
+    							objOrder.setVisible(true); btnSubmit.setEnabled(false);
+						        lblTotal.setText("");
+    						}
+    						
+    						}
     	            
-    			 }
+    			 
     		
-    				
     		    });
     		
     		
@@ -342,25 +426,7 @@ public class TransactionInput extends JPanel {
     		
 	}//public TransactionInput() throws SQLException
 	
-	private void btnSubmitActionPerformed(ActionEvent e) {
-		OrderDetails objOrder;
-		try {
-			
-			
-			objOrder = new OrderDetails();
-			objOrder.setVisible(true);
-			objOrder.objInput = this;
-			
-			
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		}
+	
 	
 	
 	void createconn() throws ClassNotFoundException{
@@ -389,7 +455,7 @@ public class TransactionInput extends JPanel {
 	         Statement objstmt = objCon.createStatement();
 	         
 	         //Create the statement that will manipulate data
-	         String query = "SELECT supplier_name FROM supplier";
+	         String query = "SELECT supplier_id FROM supplier";
 	         
 	        ResultSet rs = objstmt.executeQuery(query);
 	 		
