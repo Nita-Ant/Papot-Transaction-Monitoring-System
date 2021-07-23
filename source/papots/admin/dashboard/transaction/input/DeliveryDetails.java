@@ -184,7 +184,7 @@ public class DeliveryDetails extends JDialog {
 	           
 	           
 	    }catch(SQLException ex) {
-	    	JOptionPane.showMessageDialog(null,ex);
+	    	JOptionPane.showMessageDialog(null,"Invalid input. Please try again.");
 	    }
 	
 	}
