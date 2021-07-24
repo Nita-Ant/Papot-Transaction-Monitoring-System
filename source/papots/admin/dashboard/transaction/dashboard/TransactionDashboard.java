@@ -191,7 +191,7 @@ public class TransactionDashboard extends JPanel {
 
 
 	    }catch(SQLException ex) {
-	    	JOptionPane.showMessageDialog(null,ex);
+	    	JOptionPane.showMessageDialog(null,"Invalid Input. Please try again");
 	    }
 
 	}

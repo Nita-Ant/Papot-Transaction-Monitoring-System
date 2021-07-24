@@ -43,7 +43,7 @@ public class DlgAsk extends JDialog {
 		//SETTING THE DIALOG
 		this.setModal(true);
 		this.setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);	
+			
 		
 		setBounds(100, 100, 396, 325);
 		getContentPane().setLayout(new BorderLayout());
@@ -77,18 +77,29 @@ public class DlgAsk extends JDialog {
 				
 				
 				//check if it fits the constraints
-				
-				
-					if ((Integer.parseInt(txtQty.getText()) > 0 && Integer.parseInt(txtQty.getText()) <= 9999) ||  (Float.parseFloat(txtPrice.getText()) >= 0.01 && Float.parseFloat(txtPrice.getText()) <= 9999.70)) {
-						objInput.setIntQty(Integer.parseInt(txtQty.getText()));
-						objInput.setFltPrice(Float.parseFloat(txtPrice.getText()));
-						dispose();
+					
+				String QTY = txtQty.getText();
+				String Price = txtPrice.getText();
+					if (QTY.equals("") || Price.equals("")) {
+						JOptionPane.showMessageDialog(null, "Invalid Input. Please try again");
 						txtQty.setText("");
 						txtPrice.setText("");
-						
 					}else {
-						JOptionPane.showMessageDialog(null, "Invalid Input . Please try again");
+						
+						if ((Integer.parseInt(txtQty.getText()) > 0 && Integer.parseInt(txtQty.getText()) <= 9999) ||  (Float.parseFloat(txtPrice.getText()) >= 0.01 && Float.parseFloat(txtPrice.getText()) <= 9999.70)) {
+							objInput.setIntQty(Integer.parseInt(txtQty.getText()));
+							objInput.setFltPrice(Float.parseFloat(txtPrice.getText()));
+							dispose();
+							txtQty.setText("");
+							txtPrice.setText("");
+							
+						}else {
+							JOptionPane.showMessageDialog(null, "Invalid Input . Please try again");
+						}
+						
 					}
+				
+					
 				}
 		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -127,7 +138,7 @@ public class DlgAsk extends JDialog {
 		contentPanel.setLayout(gl_contentPanel);
 		
 			        
-		
+		this.setLocationRelativeTo(null);
 		
 	}
 

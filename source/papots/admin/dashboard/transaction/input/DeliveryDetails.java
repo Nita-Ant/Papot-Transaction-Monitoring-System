@@ -163,7 +163,7 @@ public class DeliveryDetails extends JDialog {
 						
 					
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null,ex);
+					JOptionPane.showMessageDialog(null,"Invalid Input. Please try again.");
 				}
 				
 			}
