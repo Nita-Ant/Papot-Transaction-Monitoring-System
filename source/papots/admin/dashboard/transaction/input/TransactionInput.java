@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.function.Supplier;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -64,6 +65,7 @@ public class TransactionInput extends JPanel {
 	protected JTable order;
 	private int intQty = 0;
 	private float fltPrice = 0;
+	private DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
 	
 	protected JButton btnSubmit;
 	
@@ -144,6 +146,7 @@ public class TransactionInput extends JPanel {
 		//CONNECT ORDER DETAILS TO THIS FORM
 		OrderDetails objOrder = new OrderDetails();
 		objOrder.objInput = this;
+		
 		
 		
 		
@@ -308,6 +311,7 @@ public class TransactionInput extends JPanel {
 		objDlg.objInput = this;
 		
 		
+		
 
         //ADD SCROLL PANE TO PRODUCTS TABLE
     		JScrollPane scrollPane = new JScrollPane();
@@ -367,6 +371,8 @@ public class TransactionInput extends JPanel {
     						
     						try {
     							
+    							supplier = (String)cmbSupplier.getSelectedItem();
+    							
     							//SUPPLY COST PRICE
     							Date d = new Date();
     							int Year = d.getYear() + 1900;
@@ -397,7 +403,8 @@ public class TransactionInput extends JPanel {
     							}
     							DefaultTableModel model = (DefaultTableModel) order.getModel();
     							model.setRowCount(0);
-    							objOrder.setVisible(true); btnSubmit.setEnabled(false);
+    							objOrder.setVisible(true);
+    							btnSubmit.setEnabled(false);
 						        lblTotal.setText("");
 						        ++transaction_no;
 						        
@@ -445,9 +452,11 @@ public class TransactionInput extends JPanel {
 	 
 	 //ADD DATA IN SUPPLIER COMBO BOX
 	 
-	 public void FillCombo() {
-		
+	 private void FillCombo() {
+		 
 		 try {
+			 comboBoxModel = new DefaultComboBoxModel();
+			 
 			//Create a Statement object that will allow us to do operation
 	         Statement objstmt = objCon.createStatement();
 	         
@@ -458,8 +467,9 @@ public class TransactionInput extends JPanel {
 	 		
 	        while(rs.next()) {
 	        	String name = rs.getString(1);
-				cmbSupplier.addItem(name);
+				comboBoxModel.addElement(name);
 	        }
+	        cmbSupplier.setModel(comboBoxModel);
 	       
 	 		objstmt.close();
 	 		rs.close();
@@ -472,6 +482,8 @@ public class TransactionInput extends JPanel {
 	 }
 	 
 	 public void Refreshtbl() throws SQLException, ClassNotFoundException{
+		FillCombo();
+		
 		createconn();
 		//ADD DATA TO THE PRODUCT TABLE
 			

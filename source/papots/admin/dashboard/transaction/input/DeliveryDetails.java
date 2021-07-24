@@ -1,7 +1,7 @@
 package papots.admin.dashboard.transaction.input;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,7 +16,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Date;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class DeliveryDetails extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

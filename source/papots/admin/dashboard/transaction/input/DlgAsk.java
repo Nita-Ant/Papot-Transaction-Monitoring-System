@@ -21,6 +21,7 @@ import java.sql.Statement;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class DlgAsk extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
