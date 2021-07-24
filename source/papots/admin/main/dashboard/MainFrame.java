@@ -168,7 +168,6 @@ public class MainFrame extends JFrame {
 		jpnlContentPane.add(transactionInput);
 		revalidate();
 		repaint();
-		transactionInput.FillCombo();
 		transactionInput.Refreshtbl();
 	}
 	

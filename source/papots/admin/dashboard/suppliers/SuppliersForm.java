@@ -194,6 +194,15 @@ public class SuppliersForm extends JPanel {
 					name = jtxtfldSupplierName.getText();
 					address = jtxtfldSupplierAddress.getText();
 					
+					if (id.equals("") || name.equals("") || address.equals("")) {
+						
+						JOptionPane.showMessageDialog(null,"Invalid input. Please check your input and try again");
+						jtxtfldSupplierID.setText("");
+			            jtxtfldSupplierName.setText("");
+			            jtxtfldSupplierAddress.setText("");
+					
+					}else {
+					
 					//Create a Statement object that will allow us to do operation
 	                Statement objstmt = objCon.createStatement();
 	                
@@ -209,7 +218,8 @@ public class SuppliersForm extends JPanel {
 	                jtxtfldSupplierID.setText("");
 	                jtxtfldSupplierName.setText("");
 	                jtxtfldSupplierAddress.setText("");
-	               
+					}
+					
 					
 				}catch(Exception ex){
 	                
